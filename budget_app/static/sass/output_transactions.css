@@ -1,0 +1,118 @@
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.content {
+  background-color: #e5e5f7;
+  opacity: 0.8;
+  background-image: radial-gradient(#444cf7 0.5px, transparent 0.5px), radial-gradient(#444cf7 0.5px, #e5e5f7 0.5px);
+  background-size: 20px 20px;
+  background-position: 0 0, 10px 10px;
+  height: 100vh;
+  position: relative;
+}
+
+.topSection .navbar {
+  display: flex;
+  justify-content: end;
+}
+.topSection .navbar__navLink {
+  padding: 0.5rem;
+}
+
+.midSection {
+  display: flex;
+  justify-content: center;
+  padding-top: 10rem;
+}
+.midSectionLeft__transactionsContainer {
+  width: 30%;
+  margin-right: 5rem;
+  border: 1px solid rgba(68, 76, 247, 0.5);
+  background-color: #F8FBF8;
+  max-width: 300px;
+  padding: 2.5rem 2.5rem;
+  border-radius: 0.5rem;
+  box-shadow: 0.75rem 0.75rem 1.5rem rgba(68, 76, 247, 0.75);
+  position: relative;
+}
+.midSectionLeft__transactionsContainer .transactionsContainer__form .form__title {
+  text-align: center;
+  padding: 1.5rem 0;
+}
+.midSectionLeft__transactionsContainer .transactionsContainer__form .formBlock__expenses .expense {
+  display: block;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+.midSectionLeft__transactionsContainer .transactionsContainer__form .formBlock__expenses .fileInputLabel {
+  margin: 1.5rem 0;
+}
+.midSectionLeft__transactionsContainer .transactionsContainer__form .formBlock__expenses .fileInput {
+  margin-top: 0.5rem;
+  border-radius: 0.25rem;
+}
+.midSectionLeft__transactionsContainer .transactionsContainer__form .formBlock__buttonContainer {
+  display: flex;
+  justify-content: center;
+  padding: 0.5rem 2.5rem;
+}
+.midSectionLeft__transactionsContainer .transactionsContainer__form .formBlock__buttonContainer .button {
+  margin-top: 0.5rem;
+  padding: 0.5rem 2.5rem;
+  border-radius: 0.25rem;
+  border: 1px solid rgba(68, 76, 247, 0.5);
+  background-color: #F8FBF8;
+  box-shadow: 0.1rem 0.1rem 0.25rem rgba(68, 76, 247, 0.5);
+}
+.midSectionRight__transactionsContainer {
+  width: 30%;
+  margin-right: 5rem;
+  border: 1px solid rgba(68, 76, 247, 0.5);
+  background-color: #F8FBF8;
+  padding: 2.5rem 2.5rem;
+  border-radius: 0.5rem;
+  box-shadow: 0.75rem 0.75rem 1.5rem rgba(68, 76, 247, 0.75);
+  position: relative;
+  margin-left: 5rem;
+}
+.midSectionRight__transactionsContainer .transactionsContainer__formBlock {
+  margin-top: 0.5rem;
+}
+.midSectionRight__transactionsContainer .transactionsContainer__formBlock .fileToUpdateSheet {
+  margin-top: 0.5rem;
+  overflow: hidden;
+}
+.midSectionRight__transactionsContainer .transactionsContainer__formBlock .statements__title {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+.midSectionRight__transactionsContainer .contentBlock__buttonContainer {
+  margin: 1.5rem auto 0;
+  padding: 0.5rem 0;
+  border-radius: 0.25rem;
+  border: 1px solid rgba(68, 76, 247, 0.5);
+  width: 50%;
+  background-color: #F8FBF8;
+  box-shadow: 0.1rem 0.1rem 0.25rem rgba(68, 76, 247, 0.5);
+  text-align: center;
+}
+.midSectionRight__transactionsContainer .contentBlock__buttonContainer .button {
+  text-decoration: none;
+  font-size: 1rem;
+}
+
+.bottomSection {
+  font-size: 0.5rem;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/*# sourceMappingURL=output_transactions.css.map */

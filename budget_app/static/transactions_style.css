@@ -1,0 +1,148 @@
+/* login.html */
+
+*,
+*::before,
+*::after{
+    margin: 0;
+    padding: 0;
+    box-sizing: inherit;
+}
+
+.mainContainer{
+    height: 100vh;
+    background-color: black;
+
+}
+.content{
+    .topSection{
+        max-width: 100%;
+        background-color: rgb(119, 119, 230);
+        /* color: white; */
+        .navbar{
+            display: flex;
+            justify-content: end;
+            .navbar__navLink{
+                padding: .5rem;
+            }
+        }
+    }
+
+    .midSection{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: antiquewhite;
+        max-width: 100%;
+        height:80vh;
+        .midSectionLeft__loginContainer{
+            display: flex;
+            justify-content: center;
+            padding: 5rem;
+            /* background-color: brown; */
+            .loginContainer__contentBlock{
+                /* display: flex; */
+                /* justif: center; */
+                /* border: 2px solid black; */
+                .flashedMessages{
+                    color: red;
+                }
+                .contentBlock__userNamedContainer{
+                    display: flex;
+                    /* border: 2px solid white; */
+                    padding: 1.5rem .5rem;
+                    .userNameLabel{
+                        /* border: 2px solid black; */
+                        width: 100%;
+                    }
+                    .userNameInput{
+                        /* border: 2px solid black; */
+                        width: 100%;
+                    }
+                }
+                .contentBlock__passwordContainer{
+                    /* border: 2px solid black; */
+                    padding: .5rem .5rem;
+                        .passwordLabel{
+                            width: 100%;
+                        }
+                        .passwordInput{
+                            width: 100%;
+                        }
+                }
+                .contentBlock__buttonContainer{
+                    /* border: 2px solid black; */
+                    display: flex;
+                    justify-content: center;
+                    padding: .5rem .5rem;
+                    .button{
+                        padding: .25rem .25rem;
+                        margin: .25rem .25rem;
+                    }
+                }
+            }
+        }
+    }
+
+        .midSectionRight__loginContainer{
+            display: flex;
+            justify-content: center;
+            padding: 5rem;
+            /* background-color: brown; */
+
+            .loginContainer__contentBlock{
+                /* display: flex; */
+                /* justif: center; */
+                /* border: 2px solid black; */
+                .flashedMessages{
+                    color: red;
+                }
+
+                .contentBlock__userNamedContainer{
+                    display: flex;
+                    /* border: 2px solid white; */
+                    padding: 1.5rem .5rem;
+                    .userNameLabel{
+                        /* border: 2px solid black; */
+                        width: 100%;
+                    }
+                    .userNameInput{
+                        /* border: 2px solid black; */
+                        width: 100%;
+                    }
+                }
+
+                .contentBlock__passwordContainer{
+                    /* border: 2px solid black; */
+                    padding: .5rem .5rem;
+                        .passwordLabel{
+                            width: 100%;
+                        }
+                        .passwordInput{
+                            width: 100%;
+                        }
+                }
+
+                .contentBlock__buttonContainer{
+                    /* border: 2px solid black; */
+                    display: flex;
+                    justify-content: center;
+                    padding: .5rem .5rem;
+                    .button{
+                        padding: .25rem .25rem;
+                        margin: .25rem .25rem;
+                    }
+                }
+            }
+        }
+    .bottomSection{
+        max-width: 100%;
+        background-color: rgb(119, 119, 230);
+        display: flex;
+        justify-content: center;
+        /* color: white; */
+        .bottomSection__footer{
+                size: 1000px;
+                padding: .25rem;
+        }
+    }
+}

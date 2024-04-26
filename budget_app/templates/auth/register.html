@@ -1,0 +1,45 @@
+<!doctype html>
+<title>Register - Budget App</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='sass/output_register.css') }}">
+<section class="mainContainer">
+    <div class="content">
+        <div class="topSection">
+            <div class="navbar">
+                <a class="navbar__navLink" href="{{url_for('auth.login_user')}}">Login</a>
+                <a class="navbar__navLink" href="{{url_for('auth.logout_user')}}">Logout</a>
+            </div>
+        </div>
+        <div class="midSection">
+            <div class="midSection__registerContainer registerContainer">
+                <form class="registerContainer__form form" method="POST" action="/register">
+                    <div clas="form__topDiv"></div>
+                    <div class="form__img"></div>
+                    <div class="form__userNameContainer">
+                        <label name="username" for="username" class="userNameLabel">User Name</label>
+                        <input type="text" name="username" class="userNameInput">
+                    </div>
+                    <div class="form__firstNameContainer">
+                        <label name="firstName" for="firstName" class="firstNameLabel">First Name</label>
+                        <input type="text" name="firstName" class="firstNameInput">
+                    </div>
+                    <div class="form__lastNameContainer">
+                        <label name="lastName" for="lastName" class="lastNameLabel">Last Name</label>
+                        <input type="text" name="lastName" class="lastNameInput">
+                    </div>
+                    <div class="form__passwordContainer">
+                        <label name="password" for="password" class="passwordLabel">Password</label>
+                        <input type="password" name="password" class="passwordInput">
+                    </div>
+                    <div class="form__buttonContainer">
+                        <button type="submit" class="button">Sign Up!</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="bottomSection">
+            <div class="bottomSection__footer">
+                <h6> Copyright AZisTheBest &#xA9</h6>
+            </div>
+        </div>  
+    </div>
+</section>

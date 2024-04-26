@@ -1,0 +1,55 @@
+<!doctype html>
+<title>Transactions - Budget App</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='sass/output_transactions.css') }}">
+<section class="mainContainer">
+    <div class="content">
+        <div class="topSection">
+            <div class="topSection__navbar navbar">
+                <a class="navbar__navLink" href="{{url_for('auth.logout_user')}}">Logout</a>
+            </div>
+        </div>
+        <div class="midSection">
+            <div class="midSectionLeft__transactionsContainer transactionsContainer">
+                <form class="transactionsContainer__form " action="/submit_transaction" method="POST" enctype="multipart/form-data">
+                    <h1 class="form__title">Submit your statements</h1>
+                    <div class="formBlock__expenses">
+                        <div>
+                            {% for message in get_flashed_messages() %}
+                            <h3 class="expense"> {{message}} </h3>
+                            {% endfor %}
+                            <label name="" for="file"  class="fileInputLabel">Upload (.txt, .csv, .xlsx)</label>
+                            <input type="file" name="file" value="select file" class="fileInput">
+                        </div>
+                    </div>
+                    <div class="formBlock__buttonContainer ">
+                        <button type="submit" class="button">Submit</button>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="midSectionRight__transactionsContainer transactionsContainer">
+                <div class="transactionsContainer__formBlock" action="/submit_transaction" method="POST" enctype="multipart/form-data">
+                    <h2 class="statements__title">Statements to upload</h2>
+                    <div class="formBlock__userNamedContainer">
+                        <div>
+                            {% for file, path in files_and_paths.items() %}
+                            <h3 class="fileToUpdateSheet"> {{file}} </h3>
+                            <a href="/remove_statement?path={{path}}" id="{{path}}"> Remove Statement</a>
+                            <!-- <script></script> -->
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="contentBlock__buttonContainer">
+                        <a href="/upload_transactions" class="button">Update your budget</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="bottomSection">
+            <div class="bottomSection__footer">
+                <h6> Copyright AZisTheBest &#xA9</h6>
+            </div>
+        </div>  
+    </div>
+</section>

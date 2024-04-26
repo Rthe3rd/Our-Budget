@@ -1,0 +1,45 @@
+<!doctype html>
+<title>Login - Budget App</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='sass/output.css') }}">
+<section class="mainContainer">
+    <div class="content">
+        <div class="topSection">
+            <div class="topSection__navbar">
+                <a class="topSection__navbar--navLink" href="{{url_for('auth.register_user')}}">Register</a>
+                {% if session['username'] %}
+                <a class="topSection__navbar--navLink" href="{{url_for('auth.logout_user')}}">Logout</a>
+                {% endif %}
+            </div>
+        </div>
+            <div class="midSection">
+                <div class="midSection__loginContainer">
+                    <form class="midSection__loginContainer--form" method="POST" action="/login">
+                        <!-- <h1>Welcome to the Budget App</h1>      -->
+                        <div class="midSection__loginContainer--form__logo--img"></div>
+                        {% for message in get_flashed_messages() %}
+                        <div class="flash">{{ message }}</div>
+                        {% endfor %}
+                        <div class="midSection__loginContainer--form__userNamedContainer" >
+                            <label name="" for="" value="" class="userNameLabel">User Name:</label>
+                            <input type="text" name="username" value="" class="userNameInput">
+                        </div>
+                        <div class="midSection__loginContainer--form__passwordContainer">
+                            <label name="" for="" value="" class="passwordLabel">Password:</label>
+                            <input type="password" name="password" value="" class="passwordInput">
+                        </div>
+                        <div class="midSection__loginContainer--form__buttonContainer">
+                            <button type="submit" class="button sign-in">Login</button>
+                        </div>
+                        <div class="midSection__loginContainer--form__RegisterLinkContainer">
+                            <a href="{{url_for('auth.register_user')}}" class="registerLink"> No Account? Register</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        <div class="bottomSection">
+            <div class="bottomSection__footer">
+                <h6> Copyright Alex is the best &#xA9</h6>
+            </div>
+        </div>  
+    </div>
+</section>

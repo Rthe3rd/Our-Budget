@@ -1,0 +1,120 @@
+*,
+*::before,
+*::after{
+    margin: 0;
+    padding: 0;
+    box-sizing: inherit;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.content{
+    background-color: #e5e5f7;
+    opacity: 0.8;
+    background-image:  radial-gradient(#444cf7 0.5px, transparent 0.5px), radial-gradient(#444cf7 0.5px, #e5e5f7 0.5px);
+    background-size: 20px 20px;
+    background-position: 0 0,10px 10px;
+    height: 100vh;
+}
+
+.topSection{
+    display: flex;
+    justify-content: end;
+    padding: 1rem 2rem;
+    &__navbar{
+        &--navLink{
+            font-size: 1rem;
+            padding: 0 .25rem;
+        }
+    }
+}
+
+.midSection{
+    &__loginContainer{
+        padding: 5rem 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        
+        &--form{
+            border: 1px solid rgb(68, 76, 247, .5);
+            background-color: #F8FBF8;
+            width: 25%;
+            max-width: 500px;
+            padding: 5.5rem 2rem;
+            border-radius: .5rem;
+            box-shadow: .75rem .75rem 1.5rem rgb(68, 76, 247, .75);
+            
+            &__logo--img{
+                height: 10rem;
+                width: 10rem;
+                border-radius: 50%;
+                border: 1px solid rgb(68, 76, 247, .5);
+                background: rgb(107, 98, 126) url('../images/login_icon.png');
+                background-size: cover;
+                background-position: center;
+                position: absolute;
+                top: 7.5%;
+                left: 44.5%
+            }
+
+            &__userNamedContainer{
+                margin: 0 2rem;
+                .userNameLabel{
+                    font-size: 1rem;
+                }
+                .userNameInput{
+                    margin-top: .25rem;
+                    width: 100%;
+                    height: 2rem;
+                    border: 1px solid rgb(68, 76, 247, .5); 
+                    border-radius: .25rem;
+                    background-color: #F5F5F5;
+                }
+            }
+            &__passwordContainer{
+                margin: 0 2rem;
+                padding: 1rem 0;
+                .passwordLabel{
+                    font-size: 1rem;
+                }
+                .passwordInput{
+                    margin-top: .25rem;
+                    width: 100%;
+                    height: 2rem; 
+                    border: 1px solid rgb(68, 76, 247, .5); 
+                    border-radius: .25rem;
+                    background-color: #F5F5F5;
+                }
+            }
+            &__buttonContainer{
+                display: flex;
+                justify-content: center;
+                .button{
+                    margin-top: .5rem;
+                    padding: .5rem 2.5rem;
+                    border-radius: .25rem;
+                    border: 1px solid rgb(68, 76, 247, .5);
+                    background-color: #F8FBF8;
+                    box-shadow: .1rem .1rem .25rem rgb(68, 76, 247, .5);
+                }
+            }
+            &__RegisterLinkContainer{
+                display: flex;
+                justify-content: center;
+                .registerLink{
+                    font-size: .75rem;
+                    margin-top: 1.0rem;
+                }
+            }
+        }
+    }
+}
+
+
+.bottomSection{
+    font-size: .5rem;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}

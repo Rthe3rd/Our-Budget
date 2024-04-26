@@ -1,0 +1,147 @@
+*,
+*::before,
+*::after{
+    margin: 0;
+    padding: 0;
+    box-sizing: inherit;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.content{
+    background-color: #e5e5f7;
+    opacity: 0.8;
+    background-image:  radial-gradient(#444cf7 0.5px, transparent 0.5px), radial-gradient(#444cf7 0.5px, #e5e5f7 0.5px);
+    background-size: 20px 20px;
+    background-position: 0 0,10px 10px;
+    height: 100vh;
+    position: relative;
+}
+
+.navbar{
+    display: flex;
+    justify-content: end;
+    &__navLink{
+        padding: .5rem;
+    }
+}
+
+.topSection{
+    margin: 0 0 5rem 0;
+}
+
+.midSection{
+    .registerContainer{
+        display: flex;
+        justify-content: center;
+        // align-items: 
+        .form{
+            border: 1px solid rgb(68, 76, 247, .5);
+            background-color: #F8FBF8;
+            width: 25%;
+            max-width: 500px;
+            padding: 5.5rem 2rem;
+            border-radius: .5rem;
+            box-shadow: .75rem .75rem 1.5rem rgb(68, 76, 247, .75);
+            border: 1px solid rgb(68, 76, 247, .5);
+            position: relative;
+            &__topDiv{
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                width: 100%;
+                height: 100%;
+                background-color: #444cf7;
+            }
+            &__img{
+                border: 1px solid rgb(68, 76, 247, .5);
+                position: absolute;
+                top: -15%;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 150px;
+                height: 150px;
+                background: rgb(223, 215, 249) url('../images/register_icon.png');
+                background-size: cover;
+                background-position: center;
+                border-radius: 50%;
+            }
+            &__userNameContainer{
+                margin: .75rem 0rem;
+                .userNameLabel{
+                    display: block;
+                }
+                .userNameInput{
+                    margin-top: .25rem;
+                    width: 100%;
+                    height: 2rem;
+                    border: 1px solid rgb(68, 76, 247, .5); 
+                    border-radius: .25rem;
+                    background-color: #F5F5F5;
+                }
+            }
+            &__firstNameContainer{
+                margin: .75rem 0rem;
+                .firstNameLabel{
+                    display: block;
+                }
+                .firstNameInput{
+                    margin-top: .25rem;
+                    width: 100%;
+                    height: 2rem;
+                    border: 1px solid rgb(68, 76, 247, .5); 
+                    border-radius: .25rem;
+                    background-color: #F5F5F5;
+                }
+            }
+            &__lastNameContainer{
+                margin: .75rem 0rem;
+                .lastNameLabel{
+                    display: block;
+                }
+                .lastNameInput{
+                    margin-top: .25rem;
+                    width: 100%;
+                    height: 2rem;
+                    border: 1px solid rgb(68, 76, 247, .5); 
+                    border-radius: .25rem;
+                    background-color: #F5F5F5;
+                }
+            }
+            &__passwordContainer{
+                margin: .75rem 0rem;
+                .passwordLabel{
+                    display: block;
+                }
+                .passwordInput{
+                    margin-top: .25rem;
+                    width: 100%;
+                    height: 2rem;
+                    border: 1px solid rgb(68, 76, 247, .5); 
+                    border-radius: .25rem;
+                    background-color: #F5F5F5;
+                }
+            }
+            &__buttonContainer{
+                display: flex;
+                justify-content: center;
+                margin: .75rem 0rem;
+                .button{
+                    margin-top: .5rem;
+                    padding: .5rem 2.5rem;
+                    border-radius: .25rem;
+                    border: 1px solid rgb(68, 76, 247, .5);
+                    background-color: #F8FBF8;
+                    box-shadow: .1rem .1rem .25rem rgb(68, 76, 247, .5);
+                }
+            }
+        }
+    }
+}
+
+.bottomSection{
+    font-size: .5rem;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
