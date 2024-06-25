@@ -57,6 +57,9 @@ def submit_transaction():
 def upload_transactions():
     # get the raw banking files that are in the data_in folder, normalize and return them as a singluar DataFram
     raw_banking_files = get_files()
+    if not raw_banking_files:
+        flash('No transactions submitted', category='no_uploads')
+        return redirect(url_for('transactions.home')) 
     data_cleaner = DataCleaner(raw_banking_files)
     data_cleaner.run_cleaner_and_return_data()
     transactions_from_upload = data_cleaner.normalized_data_frame

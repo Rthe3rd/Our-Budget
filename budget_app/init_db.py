@@ -7,6 +7,11 @@ from flask import g, current_app
 # Connect to the db
 def get_db():
     if 'db' not in g:
+        # FOR DEPLOYMENT: connect to db using 'CONNECTION_INFO"
+        # g.db = psycopg2.connect(current_app.config['CONNECTION_INFO'])
+        #     with connection.cursor() as cursor:
+        #         cursor.execute(...)
+        #         results = cursor.fetchall()
         g.db = psycopg2.connect(database = current_app.config['DATABASE'], host = current_app.config['HOST'])
     return g.db
 

@@ -8,13 +8,12 @@
 }
 
 .content {
-  background-color: #e5e5f7;
+  background-color: #1C448E;
   opacity: 0.8;
-  background-image: radial-gradient(#444cf7 0.5px, transparent 0.5px), radial-gradient(#444cf7 0.5px, #e5e5f7 0.5px);
+  background-image: radial-gradient(#1C448E 0.5px, transparent 0.5px), radial-gradient(#ddddda 0.5px, #1C448E 0.5px);
   background-size: 20px 20px;
   background-position: 0 0, 10px 10px;
   height: 100vh;
-  position: relative;
 }
 
 .navbar {
@@ -29,19 +28,22 @@
   margin: 0 0 5rem 0;
 }
 
+.midSection {
+  margin-top: 7.5rem;
+}
 .midSection .registerContainer {
   display: flex;
+  align-items: center;
   justify-content: center;
 }
 .midSection .registerContainer .form {
-  border: 1px solid rgba(68, 76, 247, 0.5);
-  background-color: #F8FBF8;
+  border: 1px solid #9d9d92;
+  background-color: #ddddda;
   width: 25%;
   max-width: 500px;
-  padding: 5.5rem 2rem;
+  padding: 5.5rem 3.5rem;
   border-radius: 0.5rem;
-  box-shadow: 0.75rem 0.75rem 1.5rem rgba(68, 76, 247, 0.75);
-  border: 1px solid rgba(68, 76, 247, 0.5);
+  box-shadow: 0.75rem 0.75rem 1.5rem #0d1f40;
   position: relative;
 }
 .midSection .registerContainer .form__topDiv {
@@ -53,16 +55,16 @@
   background-color: #444cf7;
 }
 .midSection .registerContainer .form__img {
-  border: 1px solid rgba(68, 76, 247, 0.5);
+  border: 1px solid #9d9d92;
   position: absolute;
-  top: -15%;
-  left: 50%;
   transform: translateX(-50%);
   width: 150px;
   height: 150px;
-  background: rgb(223, 215, 249) url("../images/register_icon.png");
+  background: #ddddda url("../images/register_icon.png");
   background-size: cover;
   background-position: center;
+  top: -15%;
+  left: 50%;
   border-radius: 50%;
 }
 .midSection .registerContainer .form__userNameContainer {
@@ -124,15 +126,21 @@
 .midSection .registerContainer .form__buttonContainer {
   display: flex;
   justify-content: center;
-  margin: 0.75rem 0rem;
 }
 .midSection .registerContainer .form__buttonContainer .button {
+  font-weight: 800;
   margin-top: 0.5rem;
   padding: 0.5rem 2.5rem;
-  border-radius: 0.25rem;
-  border: 1px solid rgba(68, 76, 247, 0.5);
-  background-color: #F8FBF8;
-  box-shadow: 0.1rem 0.1rem 0.25rem rgba(68, 76, 247, 0.5);
+  border-radius: 0.5rem;
+  border: 1px solid #9d9d92;
+  box-shadow: 0.1rem 0.1rem 0.25rem;
+}
+.midSection .registerContainer .form__buttonContainer .button:hover {
+  background-color: #f8f8ef;
+}
+.midSection .registerContainer .form__buttonContainer .button:active {
+  transform: translate(0.1rem, 0.1rem);
+  box-shadow: 0.1rem 0.1rem 0.05rem;
 }
 
 .bottomSection {

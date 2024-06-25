@@ -14,8 +14,10 @@
                     <h1 class="form__title">Submit your statements</h1>
                     <div class="formBlock__expenses">
                         <div>
-                            {% for message in get_flashed_messages() %}
-                            <h3 class="expense"> {{message}} </h3>
+                            {% for category, message in get_flashed_messages(with_categories=True) %}
+                                {% if category != 'no_uploads'  %}
+                                <h3 class="expense"> {{message}} </h3>
+                                {% endif %}
                             {% endfor %}
                             <label name="" for="file"  class="fileInputLabel">Upload (.txt, .csv, .xlsx)</label>
                             <input type="file" name="file" value="select file" class="fileInput">
@@ -32,6 +34,13 @@
                     <h2 class="statements__title">Statements to upload</h2>
                     <div class="formBlock__userNamedContainer">
                         <div>
+                            <div class>
+                                {% for category, message in get_flashed_messages(with_categories=True) %}
+                                    {% if category == 'no_uploads' %}
+                                        {{ message }}
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
                             {% for file, path in files_and_paths.items() %}
                             <h3 class="fileToUpdateSheet"> {{file}} </h3>
                             <a href="/remove_statement?path={{path}}" id="{{path}}"> Remove Statement</a>

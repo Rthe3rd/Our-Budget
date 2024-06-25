@@ -85,21 +85,19 @@ class DataCleaner(object):
                 normalized_data_frame['category'] = data_frame.iloc[:, 10] 
                 normalized_data_frame['amount'] = data_frame.iloc[:, 2] 
                 normalized_data_frame.drop(data_frame.index[0:6], inplace=True)
-                normalized_data_frame['transaction_date'] = pd.to_datetime(normalized_data_frame['transaction_date'])
             elif 'post date' in data_fame_columns:
                 normalized_data_frame['transaction_date'] = data_frame.iloc[:, 0]
                 normalized_data_frame['description'] = data_frame.iloc[:, 2]
                 normalized_data_frame['category'] = data_frame.iloc[:, 3]
                 normalized_data_frame['amount'] = data_frame.iloc[:, 5]
-                normalized_data_frame['transaction_date'] = pd.to_datetime(normalized_data_frame['transaction_date'])
             elif '*' in data_fame_columns:
                 normalized_data_frame['transaction_date'] = data_frame.iloc[:, 0]
                 normalized_data_frame['description'] = data_frame.iloc[:, 4]
                 normalized_data_frame['category'] = data_frame.iloc[:, 2]
                 normalized_data_frame['amount'] = data_frame.iloc[:, 1]
-                normalized_data_frame['transaction_date'] = pd.to_datetime(normalized_data_frame['transaction_date'])
             normalized_data_frames.append(normalized_data_frame)
         normalized_data_frame = pd.concat(normalized_data_frames, axis=0)
+        normalized_data_frame['transaction_date'] = pd.to_datetime(normalized_data_frame['transaction_date'])
         normalized_data_frame['amount'] = normalized_data_frame['amount'].abs().astype(float)
         # Removing payments - Chase, Amex, Bilt
         normalized_data_frame = normalized_data_frame[~normalized_data_frame['description'].str.contains('AUTOMATIC PAYMENT -')]

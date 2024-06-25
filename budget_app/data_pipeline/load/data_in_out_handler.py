@@ -4,7 +4,8 @@ from flask import current_app
 
 def get_files():
     # previously was getting an object with a name/path
-    files = [file for file in os.scandir(os.path.join(os.getcwd(), 'budget_app/data_pipeline/data_in'))]
+    if os.scandir(os.path.join(os.getcwd(), 'budget_app/data_pipeline/data_in')):
+        files = [file for file in os.scandir(os.path.join(os.getcwd(), 'budget_app/data_pipeline/data_in'))]
     return files
 
 def move_files_out():
