@@ -3,6 +3,7 @@ import calendar
 from datetime import datetime
 from flask import Flask
 
+# def create_app(test_config=None):
 def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
@@ -10,12 +11,16 @@ def create_app(test_config=None):
         # DATABASE=os.path.join(app.instance_path, 'budget_app.postgreSQL'),
         DATABASE='budget_app',
         HOST='localhost',
+        CONNECTION_INFO='postgres://ba_v2:AMAoFZ86emUboMt@ba-v2-db.flycast:5432/ba_v2?sslmode=disable',
+        # CONNECTION_INFO='postgres://rthe3:AMAoFZ86emUboMt@ba-v2-db.internal:5432/ba-v2-db',
         ALLOWED_EXTENSIONS = {'txt', 'xlsx', 'csv', 'pdf'},
         UPLOAD_FOLDER = 'budget_app/data_pipeline/data_in',
         OUTPUT_FOLDER = 'budget_app/data_pipeline/data_out',
         FIRST_OF_MONTH = datetime.now().replace(day=1).strftime("%Y-%m-%d"),
         LAST_OF_MONTH = datetime(datetime.now().year, datetime.now().month, calendar.monthrange(datetime.now().year, datetime.now().month)[1]).strftime("%Y-%m-%d")
     )
+
+
 
     if test_config is None:
         app.config.from_pyfile('config.py', silent=True)

@@ -1,3 +1,5 @@
+// use variablies defined in _variables.scss
+@use '_variables' as *;
 *,
 *::before,
 *::after{
@@ -8,9 +10,9 @@
 }
 
 .content{
-    background-color: #e5e5f7;
+    background-color: $primary-blue;
     opacity: 0.8;
-    background-image:  radial-gradient(#444cf7 0.5px, transparent 0.5px), radial-gradient(#444cf7 0.5px, #e5e5f7 0.5px);
+    background-image:  radial-gradient($primary-blue 0.5px, transparent 0.5px), radial-gradient($primary-cream 0.5px, $primary-blue 0.5px);
     background-size: 20px 20px;
     background-position: 0 0,10px 10px;
     height: 100vh;
@@ -22,80 +24,116 @@
     padding: 1rem 2rem;
     &__navbar{
         &--navLink{
-            font-size: 1rem;
-            padding: 0 .25rem;
+            // font-size: 1rem;
+            // padding: 0 .25rem;
+            color: $primary-cream-light;
+            font-size: .75rem;
+            margin-top: 1.0rem;
+            &:hover{
+                color: red;
+            };
+            &:visited{
+                color: $primary-cream-light
+            };
+            &:active{
+                color: red;
+            };
+
+
         }
     }
 }
 
 .midSection{
+    margin-top: 7.5rem;
     &__loginContainer{
         padding: 5rem 0;
         display: flex;
         align-items: center;
-        justify-content: center;
-        
+        justify-content: center;        
         &--form{
-            border: 1px solid rgb(68, 76, 247, .5);
-            background-color: #F8FBF8;
+            border: .5px solid rgb($primary-cream-dark, 1);
+            background-color: $primary-cream;
             width: 25%;
             max-width: 500px;
-            padding: 5.5rem 2rem;
+            padding: 5.5rem 1rem 4.5rem 1rem;
             border-radius: .5rem;
-            box-shadow: .75rem .75rem 1.5rem rgb(68, 76, 247, .75);
-            
+            box-shadow: .75rem .75rem 1.5rem rgb($primary-blue-dark, 1);
+            position: relative;
             &__logo--img{
                 height: 10rem;
                 width: 10rem;
                 border-radius: 50%;
-                border: 1px solid rgb(68, 76, 247, .5);
-                background: rgb(107, 98, 126) url('../images/login_icon.png');
+                border: .5px solid rgb($primary-cream-dark, 1);
+                background: rgb($primary-cream, 1) url('../images/login_icon.png');
                 background-size: cover;
                 background-position: center;
                 position: absolute;
-                top: 7.5%;
-                left: 44.5%
+                top: -13%;
+                left: 50%;
+                transform: translate(-50%, -20%);
             }
-
+            .flash{
+                margin-top: .25rem;
+                font-size: .75rem;
+                font-weight: 700;
+                color: red;
+            }
             &__userNamedContainer{
+                // padding: 1.5rem 0;
                 margin: 0 2rem;
                 .userNameLabel{
-                    font-size: 1rem;
+                    font-size: .75rem;
+                    font-weight: 600;
+                    color: rgb($primary-color, 1);
+                    padding-left: .25rem;
+                    text-transform: uppercase;
                 }
                 .userNameInput{
                     margin-top: .25rem;
                     width: 100%;
                     height: 2rem;
-                    border: 1px solid rgb(68, 76, 247, .5); 
-                    border-radius: .25rem;
-                    background-color: #F5F5F5;
+                    border: 1px solid rgb($primary-blue, .5); 
+                    border-radius: .5rem;
+                    background-color: $primary-cream-light;
                 }
             }
             &__passwordContainer{
                 margin: 0 2rem;
                 padding: 1rem 0;
                 .passwordLabel{
-                    font-size: 1rem;
+                    font-size: .75rem;
+                    font-weight: 600;
+                    color: rgb($primary-color, 1);
+                    padding-left: .25rem;
+                    text-transform: uppercase;
                 }
                 .passwordInput{
                     margin-top: .25rem;
                     width: 100%;
-                    height: 2rem; 
-                    border: 1px solid rgb(68, 76, 247, .5); 
-                    border-radius: .25rem;
-                    background-color: #F5F5F5;
+                    height: 2rem;
+                    border: 1px solid rgb($primary-blue, .5); 
+                    border-radius: .5rem;
+                    background-color: $primary-cream-light;
                 }
             }
             &__buttonContainer{
                 display: flex;
                 justify-content: center;
                 .button{
+                    font-weight: 800;
                     margin-top: .5rem;
                     padding: .5rem 2.5rem;
-                    border-radius: .25rem;
-                    border: 1px solid rgb(68, 76, 247, .5);
-                    background-color: #F8FBF8;
-                    box-shadow: .1rem .1rem .25rem rgb(68, 76, 247, .5);
+                    border-radius: .5rem;
+                    border: 1px solid rgb($primary-cream-dark, 1);
+                    box-shadow: .1rem .1rem .25rem;
+                    &:hover{
+                        background-color: rgb($primary-cream-light, 1);
+                    }
+                    &:active{
+                        transform: translate(.1rem, .1rem);
+                        box-shadow: .1rem .1rem .05rem;
+                    }
                 }
             }
             &__RegisterLinkContainer{
@@ -104,6 +142,15 @@
                 .registerLink{
                     font-size: .75rem;
                     margin-top: 1.0rem;
+                    &:hover{
+                        color: red;
+                    };
+                    &:visited{
+                        color: rgb($primary-blue-dark, 1);
+                    };
+                    &:active{
+                        color: red;
+                    };
                 }
             }
         }

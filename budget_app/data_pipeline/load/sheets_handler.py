@@ -34,7 +34,6 @@ class GoogleHandler(object):
         self.date_ranges = date_ranges
         self.banking_data = banking_data
         self.spreadsheet_id = '1Nvt_5JvU1Bkrhn2hofFiFPTtJblOsoRW5q2kbBxn168'
-        self.today_date = date.today()
         self.creds = self.get_creds_and_build()[0]
         self.service = self.get_creds_and_build()[1]
 
@@ -98,8 +97,6 @@ class GoogleHandler(object):
         # get sheet id so you can format the new sheet
         for sheet in working_sheet.get(spreadsheetId=SPREADSHEET_ID).execute()['sheets']:
             if re.search('[0-9]{4}-[0-9]+', sheet['properties']['title']):
-                # self.format_sheet()
-                # print(sheet['properties']['sheetId'])
                 self.format_sheet(sheet['properties']['sheetId'])
 
             
@@ -131,12 +128,9 @@ class GoogleHandler(object):
             'valueInputOption':'USER_ENTERED',
             'data': [
                 {
-                    # this will eventually come from the return of the method before this
                     # Sheet1!A:Z -> spreadsheet info comes from the batchUpdate() arguments 
                     "range": f'{sheet_title}!F:Z',
                     "majorDimension": 'ROWS',
-                    # values to be added
-                    # "values": self.banking_data
                     "values": data_frame
                 },
             ]
@@ -192,8 +186,6 @@ class GoogleHandler(object):
                     "range": {
                         "sheetId": sheet_id,
                         "dimension": "ROWS",
-                        # "startIndex": 0,
-                        # "endIndex": 9
                     },
                     "properties": {
                         "pixelSize": 18
@@ -202,22 +194,6 @@ class GoogleHandler(object):
                     }
                 }
             ]
-                # "requests": [
-                # {
-                #     "updateDimensionProperties": {
-                #     "range": {
-                #         "sheetId": sheet_id,
-                #         "dimension": "COLUMNS",
-                #         "startIndex": 5,
-                #         "endIndex": 9
-                #     },
-                #     "properties": {
-                #         "pixelSize": 260
-                #     },
-                #     "fields": "pixelSize"
-                #     }
-                # }
-                # ]
         }
         response = working_sheet.batchUpdate(spreadsheetId = self.spreadsheet_id, body=body).execute()
         return response

@@ -1,3 +1,5 @@
+// 
+@use '_variables' as *;
 *,
 *::before,
 *::after{
@@ -8,13 +10,12 @@
 }
 
 .content{
-    background-color: #e5e5f7;
+    background-color: $primary-blue;
     opacity: 0.8;
-    background-image:  radial-gradient(#444cf7 0.5px, transparent 0.5px), radial-gradient(#444cf7 0.5px, #e5e5f7 0.5px);
+    background-image:  radial-gradient($primary-blue 0.5px, transparent 0.5px), radial-gradient($primary-cream 0.5px, $primary-blue 0.5px);
     background-size: 20px 20px;
     background-position: 0 0,10px 10px;
     height: 100vh;
-    position: relative;
 }
 
 .navbar{
@@ -30,19 +31,20 @@
 }
 
 .midSection{
+    margin-top: 7.5rem;
     .registerContainer{
+        // padding: 5rem 0;
         display: flex;
+        align-items: center;
         justify-content: center;
-        // align-items: 
         .form{
-            border: 1px solid rgb(68, 76, 247, .5);
-            background-color: #F8FBF8;
+            border: 1px solid rgb($primary-cream-dark, 1);
+            background-color: $primary-cream;
             width: 25%;
             max-width: 500px;
-            padding: 5.5rem 2rem;
+            padding: 5.5rem 3.5rem;
             border-radius: .5rem;
-            box-shadow: .75rem .75rem 1.5rem rgb(68, 76, 247, .75);
-            border: 1px solid rgb(68, 76, 247, .5);
+            box-shadow: .75rem .75rem 1.5rem rgb($primary-blue-dark, 1);
             position: relative;
             &__topDiv{
                 position: absolute;
@@ -53,16 +55,16 @@
                 background-color: #444cf7;
             }
             &__img{
-                border: 1px solid rgb(68, 76, 247, .5);
+                border: 1px solid rgb($primary-cream-dark, 1);
                 position: absolute;
-                top: -15%;
-                left: 50%;
                 transform: translateX(-50%);
                 width: 150px;
                 height: 150px;
-                background: rgb(223, 215, 249) url('../images/register_icon.png');
+                background: rgb($primary-cream, 1) url('../images/register_icon.png');
                 background-size: cover;
                 background-position: center;
+                top: -15%;
+                left: 50%;
                 border-radius: 50%;
             }
             &__userNameContainer{
@@ -124,14 +126,20 @@
             &__buttonContainer{
                 display: flex;
                 justify-content: center;
-                margin: .75rem 0rem;
                 .button{
+                    font-weight: 800;
                     margin-top: .5rem;
                     padding: .5rem 2.5rem;
-                    border-radius: .25rem;
-                    border: 1px solid rgb(68, 76, 247, .5);
-                    background-color: #F8FBF8;
-                    box-shadow: .1rem .1rem .25rem rgb(68, 76, 247, .5);
+                    border-radius: .5rem;
+                    border: 1px solid rgb($primary-cream-dark, 1);
+                    box-shadow: .1rem .1rem .25rem;
+                    &:hover{
+                        background-color: rgb($primary-cream-light, 1);
+                    }
+                    &:active{
+                        transform: translate(.1rem, .1rem);
+                        box-shadow: .1rem .1rem .05rem;
+                    }
                 }
             }
         }

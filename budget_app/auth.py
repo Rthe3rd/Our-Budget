@@ -68,9 +68,11 @@ def login_user():
         password = request.form['password']
         error = None
         if not username:
-            error = 'Username is required to login'
+            # error = 'Username is required to login'
+            flash('Username is required', 'error_username')
         if not password:
-            error = 'Password is required to login'
+            # error = 'Password is required to login'
+            flash('Password is required', 'error_password')
         if error is None:
             try:
                 cursor = db.cursor()
