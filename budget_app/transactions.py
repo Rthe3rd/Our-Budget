@@ -38,7 +38,6 @@ def home():
 @login_required
 def submit_transaction():
     # save expenses to db
-    # should this trigger an updating of the google sheet all in one
     if request.method == 'POST':
         if 'file' not in request.files:
             flash('File required!')
@@ -55,7 +54,7 @@ def submit_transaction():
 
 @bp.route('/upload_transactions')
 def upload_transactions():
-    # get the raw banking files that are in the data_in folder, normalize and return them as a singluar DataFram
+    # get the raw banking files that are in the data_in folder, normalize and return them as a singluar DataFrame
     raw_banking_files = get_files()
     if not raw_banking_files:
         flash('No transactions submitted', category='no_uploads')
@@ -64,19 +63,23 @@ def upload_transactions():
     data_cleaner.run_cleaner_and_return_data()
     transactions_from_upload = data_cleaner.normalized_data_frame
 
-    # get connections, get cursor, perform execution on cursors and commit
+    # get connections => get cursor => perform execution on cursors => commit execution
     db = get_db()
+    # get user_id from db that matches the current user_id in session
     cursor = db.cursor()
     username = session.get('username')
     cursor.execute(
         'SELECT id FROM users WHERE username = %s', (username,)
     )
     user_id = cursor.fetchone()[0]
+    # get all records with user id => this is pulling ALL the records
+    # Using a date range would be better as you're essentially pulling the entire table into memory
     cursor.execute(
         'SELECT unique_record_id FROM transactions WHERE user_id = %s', (user_id,)
     )
-
+    # fetch all the rows pulled by the execution 
     pulled_transactions = cursor.fetchall()
+    # convert pulled transactions to a pandas series for better handling
     pulled_transactions = pd.Series(transaction[0] for transaction in pulled_transactions)
 
 
@@ -139,7 +142,7 @@ def upload_transactions():
     # STARTING THE GOOGLE SHEETS HANDLER PROCESS
     # pass the listified, stringified, dictionary of lists of lists to the GoogleeHandler
     # google_handler = GoogleHandler(date_ranges=date_ranges, banking_data=list_of_dataframes_by_month, user=username )
-    google_handler = GoogleHandler(date_ranges=date_ranges, banking_data=list_of_dataframes_by_month, user=username )
+    google_handler = GoogleHandler(date_ranges=date_ranges, banking_data=list_of_dataframes_by_month, user=username)
     google_handler.check_for_sheet()
 
     # columns_to_add_to_sheet = [transactions_to_add_to_sheets.map(str).columns.tolist()]

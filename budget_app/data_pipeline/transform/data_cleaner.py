@@ -48,13 +48,6 @@ class DataCleaner(object):
         self.data_to_pass_to_google_handler = ''
         self.normalized_data_frame = ''
 
-    def clean_data(self):
-        self.convert_direntrys_to_dfs()
-        self.normalize_columns_headers()
-        # self.normalize_columns_and_size()
-        self.normalize_data()
-        # self.package_data_frames()
-
     def run_cleaner_and_return_data(self):
         self.convert_direntrys_to_dfs()
         self.normalize_data()
@@ -64,7 +57,6 @@ class DataCleaner(object):
             if "csv" in direntry.name.lower():
                 banking_data_df = pd.read_csv(direntry.path)
             elif "xlsx" in direntry.name.lower():
-                # AMEX needs to target 'Sheet1' -> excel_file.sheet_names
                 banking_data_df = pd.ExcelFile(direntry.path)
                 if 'Transaction Details' in banking_data_df.sheet_names:
                     banking_data_df = pd.read_excel(direntry.path, sheet_name='Transaction Details', engine='openpyxl')
@@ -103,14 +95,13 @@ class DataCleaner(object):
         normalized_data_frame = normalized_data_frame[~normalized_data_frame['description'].str.contains('AUTOMATIC PAYMENT -')]
         normalized_data_frame = normalized_data_frame[~normalized_data_frame['description'].str.contains('AUTOPAY PAYMENT -')]
         normalized_data_frame = normalized_data_frame[~normalized_data_frame['description'].str.contains('Bill Pay Payment')]
-        # Create Unique record
+        # Create unique record id
         transaction_date = normalized_data_frame['transaction_date'].apply(lambda x: x.strftime("%Y-%m-%d").replace("-","")[2:]).astype(str)
         description = normalized_data_frame['description'].apply(lambda x:  re.compile('[\W_]+').sub('', x))
         amount = normalized_data_frame['amount'].apply(lambda x: str(x).replace(".",""))
         normalized_data_frame['unique_record_id'] = (transaction_date + amount + description).apply(lambda x:  x[:20] if len(x) >= 20 else  x + '0' * (20-len(x)))    
         self.normalized_data_frame = normalized_data_frame
         return normalized_data_frame
-
 
     def data_filter_by_date_temp(self):
         transaction_date = self.normalized_and_sized_data_frame['Transaction Date'].apply(lambda x: x.strftime("%Y-%m-%d").replace("-","")[2:]).astype(str)
@@ -122,15 +113,12 @@ class DataCleaner(object):
         # This is where the type of statement, from which bank the statement orginates from. start at bottom left/right?
         data_frames_holder = []
         for dataframe in self.dfs_to_process:
-            # Remember: Amex has funky headers - give all dfs' the correct header?
             # BILT has no headers: date amount star blank description
             if dataframe.iloc[0,0].strip() == 'Prepared for':
                 # Get column headers so they can be normalized
                 dataframe.columns = [col for col in dataframe.iloc[5]]
                 dataframe.drop(dataframe.index[0:6], inplace=True)
                 dataframe.reset_index(inplace=True)
-            # elif isinstance(dataframe.iloc[0,0], pd.Timestamp):
-                # dimensions don't equate, need to fix!
             elif dataframe.iloc[0,0].split('/') != 0:
                 column_headers = ['Transaction Date', 'Description', 'Category', 'Amount']
                 df_headers = pd.DataFrame(column_headers, columns=dataframe.columns)
@@ -144,21 +132,8 @@ class DataCleaner(object):
             data_frames_holder.append(dataframe)
         self.dfs_to_process = data_frames_holder
 
-    # def normalize_data(self):
-    #     self.dfs_to_process = pd.concat(self.dfs_to_process, ignore_index=True)
-    #     self.dfs_to_process['Transaction Date'] = pd.to_datetime(self.dfs_to_process['Transaction Date'])
-    #     # How should this step be removed?
-    #     self.dfs_to_process = pd.DataFrame(self.dfs_to_process[self.data_filter_by_date(self.dfs_to_process)])
-    #     self.dfs_to_process['Amount'] = self.dfs_to_process['Amount'].abs().astype(float)
-    #     self.dfs_to_process = self.dfs_to_process.loc[self.dfs_to_process['Description'] != 'Automatic Payment - Thank']
-    #     self.dfs_to_process = self.dfs_to_process.loc[self.dfs_to_process['Description'] != 'AUTOPAY PAYMENT - THANK YOU']
-    #     self.dfs_to_process['Description'] = self.dfs_to_process.loc[:, 'Description'].apply(lambda x : x.title())
-
     def data_filter_by_date(self, data_to_filter):
         filter = (data_to_filter.loc[:, 'Transaction Date'] >= f'{self.todays_date.year}-{self.todays_date.month}-01') & (data_to_filter.loc[:, 'Transaction Date'] <= f'{self.todays_date.year}-{self.todays_date.month}-{self.number_of_days_in_current_month}')
-        # df produces a series of True/False values, as does "filter" 
-        # -> data_to_filter.loc[(data_to_filter['Transaction Date'] >= '2023-11-01') & (data_to_filter['Transaction Date'] <= '2023-11-30')] -> is cleaner
-        # df = (data_to_filter['Transaction Date'] >= '2023-11-01') & (data_to_filter['Transaction Date'] <= '2023-11-30')
         return pd.DataFrame(filter.values, columns=['Transaction Date']).iloc[:,0]
 
     def create_unique_record_id(self):
@@ -173,82 +148,3 @@ class DataCleaner(object):
         data_to_pass_to_google_handler = [data_frames.columns.values.tolist()] 
         data_to_pass_to_google_handler.extend(data_frames.values.tolist())
         self.data_to_pass_to_google_handler = dfs_to_process
-
-
-
-
-
-
-
-
-
-
-
-
-
-    # Under construction method/to replace/generalize current normalize_columns_headers() method 
-    def normalize_columns_headers_temp(self):
-        self.date_column_indices = self.find_date_column()
-        self.description_column_indices = self.find_description_column()
-        self.amount_column_indices = self.find_amount_column()
-        self.category_column_indices = self.find_category_column()
-
-    # function returns the integer value of the column or "iloc" of a "date looking" value
-    def find_date_column(self):
-        date_pattern_dash = '([0-9]+-[0-9]{1,2}-[0-9]+)' 
-        date_pattern_slash = '([0-9]+/[0-9]{1,2}/[0-9]+)'
-        date_column_indices = []
-        if not isinstance(self.dfs_to_process, list):
-            self.dfs_to_process = [self.dfs_to_process]
-        for data_frame in self.dfs_to_process:
-            i = 0
-            for value in data_frame.iloc[-1]:
-                value_str = str(value)
-                if re.search(date_pattern_dash, value_str) or re.search(date_pattern_slash, value_str):
-                    date_column_indices.append(i)
-                    break
-                else: 
-                    i += 1
-        return date_column_indices
-
-    def find_description_column(self):
-        description_column_indices = []
-        if not isinstance(self.dfs_to_process, list):
-            self.dfs_to_process = [self.dfs_to_process]
-        for df in self.dfs_to_process:
-            if 'american' in "".join([str(column).lower().strip() for column in df.columns.to_list()]):
-                description_column_indices.append(1)
-            elif 'Description' in df.columns.to_list():
-                description_column_indices.append(df.columns.to_list().index('Description'))
-            elif '*' in df.columns.tolist():
-                description_column_indices.append(4)
-        return description_column_indices
-        
-    def find_amount_column(self):
-        amount_column_indices = []
-        if not isinstance(self.dfs_to_process, list):
-            self.dfs_to_process = [self.dfs_to_process]
-        for data_frame in self.dfs_to_process:
-            columns = [str(column).lower().replace('-','').replace('.', '') for column in data_frame.columns.tolist()]
-            numeric_columns = ['True' if column.isnumeric() else 'False' for column in columns]
-            if 'american' in "".join([str(column).lower().strip() for column in data_frame.columns.to_list()]):
-                amount_column_indices.append(2)
-            elif 'amount' in columns:
-                amount_column_indices.append(columns.index('amount')) 
-            elif 'True' in numeric_columns:
-                amount_column_indices.append(numeric_columns.index('True'))
-        return amount_column_indices
-
-    def find_category_column(self):
-        category_column_indices = []
-        if not isinstance(self.dfs_to_process, list):
-            self.dfs_to_process = [self.dfs_to_process]
-        for data_frame in self.dfs_to_process:
-            columns = [str(column).lower().replace('-','').replace('.', '') for column in data_frame.columns.tolist()]
-            if 'category' in columns:
-                category_column_indices.append(columns.index('category'))
-            elif 'american' in "".join([str(column).lower().strip() for column in data_frame.columns.to_list()]):
-                category_column_indices.append(10)
-            else:
-                category_column_indices.append(3)
-        return category_column_indices
