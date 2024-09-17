@@ -82,7 +82,6 @@ def upload_transactions():
     # convert pulled transactions to a pandas series for better handling
     pulled_transactions = pd.Series(transaction[0] for transaction in pulled_transactions)
 
-
     # remove any records that are already in the db from the transactions to add to the db
     if pulled_transactions.empty:
         transactions_to_add_to_db = transactions_from_upload.values
@@ -141,7 +140,6 @@ def upload_transactions():
 
     # STARTING THE GOOGLE SHEETS HANDLER PROCESS
     # pass the listified, stringified, dictionary of lists of lists to the GoogleeHandler
-    # google_handler = GoogleHandler(date_ranges=date_ranges, banking_data=list_of_dataframes_by_month, user=username )
     google_handler = GoogleHandler(date_ranges=date_ranges, banking_data=list_of_dataframes_by_month, user=username)
     google_handler.check_for_sheet()
 

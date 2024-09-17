@@ -1,0 +1,159 @@
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.content {
+  background-color: #1C448E;
+  opacity: 0.8;
+  background-image: radial-gradient(#1C448E 0.5px, transparent 0.5px), radial-gradient(#ddddda 0.5px, #1C448E 0.5px);
+  background-size: 20px 20px;
+  background-position: 0 0, 10px 10px;
+  height: 100vh;
+}
+
+.topSection {
+  display: flex;
+  justify-content: end;
+  padding: 1rem 2rem;
+}
+.topSection__navbar--navLink {
+  color: #f8f8ef;
+  font-size: 0.75rem;
+  margin-top: 1rem;
+}
+.topSection__navbar--navLink:hover {
+  color: red;
+}
+.topSection__navbar--navLink:visited {
+  color: #f8f8ef;
+}
+.topSection__navbar--navLink:active {
+  color: red;
+}
+
+.midSection {
+  margin-top: 7.5rem;
+}
+.midSection__loginContainer {
+  padding: 5rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.midSection__loginContainer--form {
+  border: 0.5px solid #9d9d92;
+  background-color: #ddddda;
+  width: 25%;
+  max-width: 500px;
+  padding: 5.5rem 1rem 4.5rem 1rem;
+  border-radius: 0.5rem;
+  box-shadow: 0rem 0.75rem 1.5rem 0.75rem rgba(0, 0, 0, 0.5);
+  position: relative;
+}
+.midSection__loginContainer--form__logo--img {
+  height: 10rem;
+  width: 10rem;
+  border-radius: 50%;
+  border: 0.5px solid #9d9d92;
+  background: #ddddda url("../images/login_icon.png");
+  background-size: cover;
+  background-position: center;
+  position: absolute;
+  top: -13%;
+  left: 50%;
+  transform: translate(-50%, -20%);
+}
+.midSection__loginContainer--form .flash {
+  margin-top: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: red;
+}
+.midSection__loginContainer--form__userNamedContainer {
+  margin: 0 2rem;
+}
+.midSection__loginContainer--form__userNamedContainer .userNameLabel {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #101010;
+  padding-left: 0.25rem;
+  text-transform: uppercase;
+}
+.midSection__loginContainer--form__userNamedContainer .userNameInput {
+  margin-top: 0.25rem;
+  width: 100%;
+  height: 2rem;
+  border: 1px solid rgba(28, 68, 142, 0.5);
+  border-radius: 0.5rem;
+  background-color: #f8f8ef;
+}
+.midSection__loginContainer--form__passwordContainer {
+  margin: 0 2rem;
+  padding: 1rem 0;
+}
+.midSection__loginContainer--form__passwordContainer .passwordLabel {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #101010;
+  padding-left: 0.25rem;
+  text-transform: uppercase;
+}
+.midSection__loginContainer--form__passwordContainer .passwordInput {
+  margin-top: 0.25rem;
+  width: 100%;
+  height: 2rem;
+  border: 1px solid rgba(28, 68, 142, 0.5);
+  border-radius: 0.5rem;
+  background-color: #f8f8ef;
+}
+.midSection__loginContainer--form__buttonContainer {
+  display: flex;
+  justify-content: center;
+}
+.midSection__loginContainer--form__buttonContainer .button {
+  font-weight: 800;
+  margin-top: 0.5rem;
+  padding: 0.5rem 2.5rem;
+  border-radius: 0.5rem;
+  border: 1px solid #9d9d92;
+  box-shadow: 0.1rem 0.1rem 0.25rem;
+}
+.midSection__loginContainer--form__buttonContainer .button:hover {
+  background-color: #f8f8ef;
+}
+.midSection__loginContainer--form__buttonContainer .button:active {
+  transform: translate(0.1rem, 0.1rem);
+  box-shadow: 0.1rem 0.1rem 0.05rem;
+}
+.midSection__loginContainer--form__RegisterLinkContainer {
+  display: flex;
+  justify-content: center;
+}
+.midSection__loginContainer--form__RegisterLinkContainer .registerLink {
+  font-size: 0.75rem;
+  margin-top: 1rem;
+}
+.midSection__loginContainer--form__RegisterLinkContainer .registerLink:hover {
+  color: red;
+}
+.midSection__loginContainer--form__RegisterLinkContainer .registerLink:visited {
+  color: #0d1f40;
+}
+.midSection__loginContainer--form__RegisterLinkContainer .registerLink:active {
+  color: red;
+}
+
+.bottomSection {
+  font-size: 0.5rem;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/*# sourceMappingURL=login_style.css.map */
