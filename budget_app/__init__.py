@@ -21,7 +21,6 @@ def create_app(test_config=None):
     )
 
 
-
     if test_config is None:
         app.config.from_pyfile('config.py', silent=True)
     else:
@@ -31,10 +30,6 @@ def create_app(test_config=None):
         os.makedirs(app.instance_path)
     except OSError:
         pass
-    
-    @app.route('/')
-    def test():
-        return 'test test test'
 
     # register the authorization blueprint 
     from . import auth

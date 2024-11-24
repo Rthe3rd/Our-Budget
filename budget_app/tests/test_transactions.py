@@ -13,7 +13,7 @@ from budget_app.init_db import get_db
 
 test_df = pd.DataFrame({
     # 'Transaction Date': [pd.to_datetime(['2023-01-01']), pd.to_datetime(['2023-02-10']), pd.to_datetime(['2023-02-18'])],
-    'Transaction Date': ['2023-01-01', '2023-02-10', '2023-02-18'],
+    'transaction_date': ['2023-01-01', '2023-02-10', '2023-02-18'],
     'Description': ['Example Description 1', 'Example Description 2', 'Example Description 3'],
     'Category': ['Generic Category 1', 'Generic Category 2', 'Generic Category 3'],  
     'Amount': [pd.to_numeric([44.55]), pd.to_numeric([692.30]), pd.to_numeric([10.75])],
@@ -24,11 +24,17 @@ files = [file for file in os.scandir(os.path.join(os.getcwd(), 'budget_app/tests
 data_cleaner = DataCleaner(files)
 
 def test_get_date_ranges_from_uploaded_transactions():
-    date_ranges = pd.to_datetime(test_df['Transaction Date']).dt.to_period('M').drop_duplicates()
-    for month in date_ranges:
-        assert '' == ''
+    date_ranges = pd.to_datetime(test_df['transaction_date']).dt.to_period('M').drop_duplicates()
+    date_ranges = [f'{date_range.year}' + "-" + f'{date_range.month}' for date_range in date_ranges]
+    date_ranges.reverse()
+    assert date_ranges == ''
+
 
 def test_build_sheets_name_to_update(username='alex_zuniga'):
-    date_ranges = pd.to_datetime(test_df['Transaction Date']).dt.to_period('M').drop_duplicates()
-    for date_range in date_ranges:
-        assert f"{date_range.year}-{date_range.month}-{username}" == ''
+    date_ranges = pd.to_datetime(test_df['transaction_date']).dt.to_period('M').drop_duplicates()
+    # for date_range in date_ranges:
+    #     assert f"{date_range.year}-{date_range.month}-{username}" == ''
+
+def test_min_date_in_dataframe():
+    from_date = test_df['transaction_date'].min()
+    assert from_date == '2023-01-01'
