@@ -26,8 +26,7 @@ SAMPLE_RANGE_title = 'August-AZ!A:D'
 
 
 class GoogleHandler(object):
-
-    def __init__(self, date_ranges=None, banking_data='PLACEHOLDER', user='AZ'):
+    def __init__(self, date_ranges: list[list], banking_data, user=str):
         self.user = user
         self.date_ranges = date_ranges
         self.banking_data = banking_data
@@ -61,30 +60,45 @@ class GoogleHandler(object):
     # First step is to check to see if a tab for the given month/user exists
         # To check for an existing tab, we need a way to read the tabs and compare against what we expect the tab for the given data should look like
         # Tab name should take the form "date_user".  This date/use will come as a parameter when instantiating this class
-    def check_for_sheet(self):
+    def run_sheets_update(self):
         # Call the Sheets API
         working_sheet = self.service.spreadsheets()
         # Get metadata
         sheet_metadata = working_sheet.get(spreadsheetId=SPREADSHEET_ID).execute()
         # Get all sheet/tab names
         allsheets = [sheet['properties']['title'] for sheet in sheet_metadata['sheets']]
-
         for date_range, data_frame_by_month in self.banking_data.items():
+
             date_range_to_add = f'{date_range}-{self.user}'
-            if date_range_to_add in allsheets:
-                # UPDATE SHEET
-                response = self.update_sheet(date_range_to_add, data_frame_by_month)
+
+            # if date_range_to_add in allsheets:
+            #     # UPDATE SHEET
+            #     response = self.update_sheet(date_range_to_add, data_frame_by_month)
+            # # If sheet isn't in all the sheets, create a new sheet and add data  => Create new sheet: month_user 
+            # else:
+            #     # CREATE SHEET
+            #     # UPDATE SHEET
+            #     new_sheet_creation_response = self.create_new_sheet(working_sheet, date_range_to_add)
+            #     new_sheet_added_title = new_sheet_creation_response['replies'][0]['addSheet']['properties']['title']
+            #     new_sheet_added_sheetId = new_sheet_creation_response['replies'][0]['addSheet']['properties']['sheetId']
+                
+            #     self.new_sheet_added_sheetId = new_sheet_added_sheetId
+            #     self.copy_and_paste_budget_to_new_sheet(new_sheet_added_sheetId)
+            #     response = self.update_sheet(new_sheet_added_title, data_frame_by_month)
+
             # If sheet isn't in all the sheets, create a new sheet and add data  => Create new sheet: month_user 
-            else:
-                # CREATE SHEET
-                # UPDATE SHEET
+            if not date_range_to_add in allsheets:
                 new_sheet_creation_response = self.create_new_sheet(working_sheet, date_range_to_add)
-                new_sheet_added_title = new_sheet_creation_response['replies'][0]['addSheet']['properties']['title']
+                date_range_to_add = new_sheet_creation_response['replies'][0]['addSheet']['properties']['title']
                 new_sheet_added_sheetId = new_sheet_creation_response['replies'][0]['addSheet']['properties']['sheetId']
                 
                 self.new_sheet_added_sheetId = new_sheet_added_sheetId
                 self.copy_and_paste_budget_to_new_sheet(new_sheet_added_sheetId)
-                response = self.update_sheet(new_sheet_added_title, data_frame_by_month)
+            # UPDATE SHEET
+            
+            response = self.update_sheet(date_range_to_add, data_frame_by_month)
+
+
         # get sheet id so you can format the new sheet
         for sheet in working_sheet.get(spreadsheetId=SPREADSHEET_ID).execute()['sheets']:
             if re.search('[0-9]{4}-[0-9]+', sheet['properties']['title']):
@@ -92,7 +106,7 @@ class GoogleHandler(object):
 
     # ========================== Create new sheet ========================== #
     # Request body to generate a new tab/sheet given a date range and worksheet/working_sheet
-    def create_new_sheet(self, working_sheet, date_range):
+    def create_new_sheet(self, working_sheet, date_range: str) -> None:
         body = {
             "requests" : [
                 {
@@ -119,13 +133,14 @@ class GoogleHandler(object):
         # use the "build"/connection to the specific "service" api and "resource" = build(serviceName, 'V4', creds=self.creds).spreadsheets.values()
         working_sheet = self.service.spreadsheets().values()
         month = sheet_title.split('-')[1]
-        
+
         # Use the given month to find the sheet/tab to update
         sheet_to_update = self.find_sheets_given_month_user([month])[0]
         # Use the sheet/tab to update to find where the new data starts or the "range to update"
         sheet_to_update_with_range = self.find_update_start([sheet_to_update])[0]
         range_to_update = f'{sheet_to_update_with_range["title"]}!F{len(sheet_to_update_with_range["values_in_column"]) + 1}:Z'
 
+        print(data_frame)
         # loop through a list of lists of data
         body = {
             'valueInputOption':'USER_ENTERED',
@@ -134,7 +149,7 @@ class GoogleHandler(object):
                     # Sheet1!A:Z -> spreadsheet info comes from the batchUpdate() arguments 
                     "range": f'{range_to_update}',
                     "majorDimension": 'ROWS',
-                    "values": data_frame
+                    "values": data_frame[1:]
                 },
             ]
         }
@@ -142,10 +157,10 @@ class GoogleHandler(object):
 
     def find_sheets_given_month_user(self, months_to_update: list[int] = []) -> list[str]:
         working_sheet = self.service.spreadsheets()
-        
         sheets_metadata = working_sheet.get(spreadsheetId=SPREADSHEET_ID).execute()
         sheets = sheets_metadata['sheets']
         sheets_to_update = []
+
         for month in months_to_update:
             if [sheet['properties'] for sheet in sheets if re.match(f'[0-9]+-{month}-{self.user}', sheet['properties']['title'])]:
                 sheet_to_update_metadata = [sheet['properties'] for sheet in sheets if re.match(f'[0-9]+-{month}-{self.user}', sheet['properties']['title'])][0]
