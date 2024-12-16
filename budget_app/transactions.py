@@ -34,6 +34,7 @@ def home():
     files_and_paths = dict(zip(files, paths))
     return render_template('/transactions/transactions.html', files=files, files_and_paths=files_and_paths)
 
+# submit a transaction
 @bp.route('/submit_transaction', methods=('GET', 'POST'))
 @login_required
 def submit_transaction():
@@ -93,7 +94,6 @@ def upload_transactions():
         transactions_to_add_to_db = transactions_from_upload[~transactions_from_upload['unique_record_id'].isin(pulled_transactions)].values.tolist()
         transactions_to_add_to_google_sheets = transactions_from_upload[~transactions_from_upload['unique_record_id'].isin(pulled_transactions)]
 
-    print("==============================")
     print(transactions_to_add_to_google_sheets['transaction_date'])
     date_ranges = pd.to_datetime(transactions_to_add_to_google_sheets['transaction_date']).dt.to_period('M').drop_duplicates()
 
