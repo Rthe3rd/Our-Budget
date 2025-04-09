@@ -15,7 +15,6 @@ from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
 from pandas import DataFrame
-import json
 
 # If modifying these scopes, delete the file token.json.
 SCOPES = ['https://www.googleapis.com/auth/drive']
@@ -71,31 +70,15 @@ class GoogleHandler(object):
 
             date_range_to_add = f'{date_range}-{self.user}'
 
-            # if date_range_to_add in allsheets:
-            #     # UPDATE SHEET
-            #     response = self.update_sheet(date_range_to_add, data_frame_by_month)
-            # # If sheet isn't in all the sheets, create a new sheet and add data  => Create new sheet: month_user 
-            # else:
-            #     # CREATE SHEET
-            #     # UPDATE SHEET
-            #     new_sheet_creation_response = self.create_new_sheet(working_sheet, date_range_to_add)
-            #     new_sheet_added_title = new_sheet_creation_response['replies'][0]['addSheet']['properties']['title']
-            #     new_sheet_added_sheetId = new_sheet_creation_response['replies'][0]['addSheet']['properties']['sheetId']
-                
-            #     self.new_sheet_added_sheetId = new_sheet_added_sheetId
-            #     self.copy_and_paste_budget_to_new_sheet(new_sheet_added_sheetId)
-            #     response = self.update_sheet(new_sheet_added_title, data_frame_by_month)
-
             # If sheet isn't in all the sheets, create a new sheet and add data  => Create new sheet: month_user 
             if not date_range_to_add in allsheets:
                 new_sheet_creation_response = self.create_new_sheet(working_sheet, date_range_to_add)
                 date_range_to_add = new_sheet_creation_response['replies'][0]['addSheet']['properties']['title']
                 new_sheet_added_sheetId = new_sheet_creation_response['replies'][0]['addSheet']['properties']['sheetId']
-                
                 self.new_sheet_added_sheetId = new_sheet_added_sheetId
                 self.copy_and_paste_budget_to_new_sheet(new_sheet_added_sheetId)
+
             # UPDATE SHEET
-            
             response = self.update_sheet(date_range_to_add, data_frame_by_month)
 
 
