@@ -25,11 +25,7 @@
             # A Google Account.
 
 # **************************************************************************************************** #
-import csv
-import datetime
 import calendar
-# import openpyxl
-import numpy as np
 import pandas as pd
 from datetime import date
 import re
@@ -71,6 +67,8 @@ class DataCleaner(object):
         for data_frame in self.dfs_to_process:
             data_fame_columns = [str(column).lower().strip() for column in data_frame.columns.to_list()]  
             normalized_data_frame = pd.DataFrame()
+            # Use dynamic slice objects to do this!
+            # 
             if 'american' in "".join(data_fame_columns):
                 normalized_data_frame['transaction_date'] = data_frame.iloc[:, 0] 
                 normalized_data_frame['description'] = data_frame.iloc[:, 1] 
@@ -92,10 +90,12 @@ class DataCleaner(object):
         normalized_data_frame['transaction_date'] = pd.to_datetime(normalized_data_frame['transaction_date'])
         normalized_data_frame['amount'] = normalized_data_frame['amount'].abs().astype(float)
         # Removing payments - Chase, Amex, Bilt
+            # loop through terms to remove
         normalized_data_frame = normalized_data_frame[~normalized_data_frame['description'].str.contains('AUTOMATIC PAYMENT -')]
         normalized_data_frame = normalized_data_frame[~normalized_data_frame['description'].str.contains('AUTOPAY PAYMENT -')]
         normalized_data_frame = normalized_data_frame[~normalized_data_frame['description'].str.contains('Bill Pay Payment')]
         # Create unique record id
+            # move to method
         transaction_date = normalized_data_frame['transaction_date'].apply(lambda x: x.strftime("%Y-%m-%d").replace("-","")[2:]).astype(str)
         description = normalized_data_frame['description'].apply(lambda x:  re.compile('[\W_]+').sub('', x))
         amount = normalized_data_frame['amount'].apply(lambda x: str(x).replace(".",""))
@@ -148,3 +148,8 @@ class DataCleaner(object):
         data_to_pass_to_google_handler = [data_frames.columns.values.tolist()] 
         data_to_pass_to_google_handler.extend(data_frames.values.tolist())
         self.data_to_pass_to_google_handler = dfs_to_process
+
+def get_normalized_data_frame(raw_banking_files):
+    data_cleaner = DataCleaner(raw_banking_files)
+    data_cleaner.run_cleaner_and_return_data()
+    return data_cleaner.normalized_data_frame
