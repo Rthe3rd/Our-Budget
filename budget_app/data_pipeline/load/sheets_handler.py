@@ -25,10 +25,11 @@ SAMPLE_RANGE_title = 'August-AZ!A:D'
 
 
 class GoogleHandler(object):
-    def __init__(self, date_ranges: list[list], banking_data, user=str):
+    def __init__(self, processed_data, user=str):
         self.user = user
-        self.date_ranges = date_ranges
-        self.banking_data = banking_data
+        # self.date_ranges = processed_data['date_ranges']
+        # self.banking_data = processed_data['transactions_to_add_to_db']
+        self.processed_data = processed_data
         self.spreadsheet_id = '1Nvt_5JvU1Bkrhn2hofFiFPTtJblOsoRW5q2kbBxn168'
         self.creds = self.get_creds_and_build()[0]
         self.service = self.get_creds_and_build()[1]
@@ -66,8 +67,8 @@ class GoogleHandler(object):
         sheet_metadata = working_sheet.get(spreadsheetId=SPREADSHEET_ID).execute()
         # Get all sheet/tab names
         allsheets = [sheet['properties']['title'] for sheet in sheet_metadata['sheets']]
-        for date_range, data_frame_by_month in self.banking_data.items():
 
+        for date_range, data_frame_by_month in self.processed_data['list_of_dataframes_by_month'].items():
             date_range_to_add = f'{date_range}-{self.user}'
 
             # If sheet isn't in all the sheets, create a new sheet and add data  => Create new sheet: month_user 
@@ -77,9 +78,10 @@ class GoogleHandler(object):
                 new_sheet_added_sheetId = new_sheet_creation_response['replies'][0]['addSheet']['properties']['sheetId']
                 self.new_sheet_added_sheetId = new_sheet_added_sheetId
                 self.copy_and_paste_budget_to_new_sheet(new_sheet_added_sheetId)
-
+                self.add_table_heading(date_range_to_add)
+            pass
             # UPDATE SHEET
-            response = self.update_sheet(date_range_to_add, data_frame_by_month)
+            self.update_sheet(date_range_to_add, data_frame_by_month)
 
 
         # get sheet id so you can format the new sheet
@@ -97,8 +99,8 @@ class GoogleHandler(object):
                         "properties" : {
                             "title" : date_range,
                             "tabColor": {
-                                'red': 0.5,
-                                'green': 1.5,
+                                'red': 1.5,
+                                'green': 0.0,
                                 'blue': 2.5
                             }
                         }
@@ -118,12 +120,13 @@ class GoogleHandler(object):
         month = sheet_title.split('-')[1]
 
         # Use the given month to find the sheet/tab to update
-        sheet_to_update = self.find_sheets_given_month_user([month])[0]
+
+        # sheet_to_update = self.find_sheets_given_month_user([month])[0]
+        sheet_to_update = self.find_sheets_given_month_user(sheet_title)
+
         # Use the sheet/tab to update to find where the new data starts or the "range to update"
         sheet_to_update_with_range = self.find_update_start([sheet_to_update])[0]
-        range_to_update = f'{sheet_to_update_with_range["title"]}!F{len(sheet_to_update_with_range["values_in_column"]) + 1}:Z'
-
-        print(data_frame)
+        range_to_update = f'{sheet_to_update_with_range["properties"]["title"]}!F{len(sheet_to_update_with_range["values_in_column"]) + 1}:Z'
         # loop through a list of lists of data
         body = {
             'valueInputOption':'USER_ENTERED',
@@ -138,28 +141,28 @@ class GoogleHandler(object):
         }
         return working_sheet.batchUpdate(spreadsheetId=self.spreadsheet_id, body=body).execute()
 
-    def find_sheets_given_month_user(self, months_to_update: list[int] = []) -> list[str]:
+    # def find_sheets_given_month_user(self, months_to_update: list[int] = None) -> list[str]:
+    def find_sheets_given_month_user(self, sheet_title: str = '') -> list[str]:
         working_sheet = self.service.spreadsheets()
         sheets_metadata = working_sheet.get(spreadsheetId=SPREADSHEET_ID).execute()
         sheets = sheets_metadata['sheets']
-        sheets_to_update = []
 
-        for month in months_to_update:
-            if [sheet['properties'] for sheet in sheets if re.match(f'[0-9]+-{month}-{self.user}', sheet['properties']['title'])]:
-                sheet_to_update_metadata = [sheet['properties'] for sheet in sheets if re.match(f'[0-9]+-{month}-{self.user}', sheet['properties']['title'])][0]
-                sheets_to_update.append(sheet_to_update_metadata)
-        return sheets_to_update
+        for sheet in sheets:
+            if sheet_title in sheet['properties']['title']:
+                return sheet
+        # raise exception if not found
 
-    def find_update_start(self, sheets_to_update: list[object]) -> list[object]:
+    # def find_update_start(self, sheets_to_update: list[object]) -> list[object]:
+    def find_update_start(self, sheet_to_update: list[object]) -> list[object]:
+
         working_sheet = self.service.spreadsheets()
         column_letter = 'F'
-        for sheet in sheets_to_update:
-            values_in_column = working_sheet.values().get(
-                spreadsheetId=SPREADSHEET_ID,
-                range = f"'{sheet['title']}'!{column_letter}:{column_letter}"
-            ).execute()
-            sheet['values_in_column'] = values_in_column.get('values', [])
-        return sheets_to_update
+        values_in_column = working_sheet.values().get(
+            spreadsheetId=SPREADSHEET_ID,
+            range = f"'{sheet_to_update[0]['properties']['title']}'!{column_letter}:{column_letter}"
+        ).execute()
+        sheet_to_update[0]['values_in_column'] = values_in_column.get('values', [])
+        return sheet_to_update
 
     def copy_and_paste_budget_to_new_sheet(self, sheetId):
         working_sheet = self.service.spreadsheets()
@@ -189,6 +192,23 @@ class GoogleHandler(object):
         }
         response = working_sheet.batchUpdate(spreadsheetId = self.spreadsheet_id, body=body).execute()
         return response
+
+    def add_table_heading(self, sheet_title):
+        working_sheet = self.service.spreadsheets().values()
+        # loop through a list of lists of data
+        body = {
+            'valueInputOption':'USER_ENTERED',
+            'data': [
+                {
+                    # Sheet1!A:Z -> spreadsheet info comes from the batchUpdate() arguments 
+                    "range": f'{sheet_title}!F:J',
+                    "majorDimension": 'ROWS',
+                    "values": [['Transaction Date', 'Description', 'Category', 'Amount', 'Unique Record Id']]
+                },
+            ]
+        }
+        return working_sheet.batchUpdate(spreadsheetId=self.spreadsheet_id, body=body).execute()
+
 
     def format_sheet(self, sheet_id):
         working_sheet = self.service.spreadsheets()

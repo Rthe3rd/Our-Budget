@@ -1,6 +1,3 @@
-# authorized users can submit their expenses to the database
-# import authorization login required
-# import db and perform actions
 import os
 from flask import (
     Flask, Blueprint, flash, g, redirect, render_template, request, url_for, current_app, session
@@ -8,9 +5,7 @@ from flask import (
 from werkzeug.utils import secure_filename
 from werkzeug.exceptions import abort
 from budget_app.auth import login_required
-from budget_app.data_pipeline.transform.transactions import run_transaction_upload
-
-# ========================= Temporary Imports ================================ #
+from budget_app.services.upload_transactions import run_transaction_upload
 from budget_app.data_pipeline.load.data_in_out_handler import remove_specfied_file
 
 bp = Blueprint('transactions', __name__)
@@ -35,6 +30,9 @@ def home():
 @login_required
 def submit_transaction():
     # save expenses to db
+    # change this to case + pattern matching? 
+    # file_method = (request.files['file'] if request.file.get('file') else None, request.method)?
+
     if request.method == 'POST':
         if 'file' not in request.files:
             flash('File required!')
@@ -51,7 +49,8 @@ def submit_transaction():
 
 @bp.route('/upload_transactions')
 def upload_transactions():
-
+    # I don't like this. it's not obvious that something is happening the bool is true.
+    # also, requires that a bool is returned is returned by a multi-step, multi-api calling function
     if not run_transaction_upload(session.get('username')):
         flash('No transactions submitted', category='no_uploads')
         return redirect(url_for('transactions.home')) 
